@@ -13,7 +13,10 @@ describe("Schema", () => {
   const schema = makeExecutableSchema({ typeDefs, resolvers });
 
   test("Query comments", async () => {
-    await models.Comment.bulkCreate(comments);
+    await models.Comment.bulkCreate([
+      { body: "The pillows is pure nostalgic" },
+      { body: "Hajime no ippo is the best anime" }
+    ]);
     const query = `
       {
         comments {
@@ -23,7 +26,6 @@ describe("Schema", () => {
       }
     `;
     const { data } = await graphql(schema, query, null, { models });
-
     expect(data.comments.length).toEqual(comments.length);
     expect(data.comments).toEqual(comments);
   });
