@@ -1,6 +1,6 @@
 export default {
   Query: {
-    comments: async (root, _args, { models }) => models.Comment.findAll()
+    comments: (root, _args, { models }) => models.Comment.findAll()
   },
   Mutation: {
     createComment: (_parent, { body }, { models }, _info) => {

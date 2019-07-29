@@ -4,21 +4,19 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "babel-node src --out-dir dist",
-    "start": "export NODE_ENV=production && yarn build && node ./build/index.js",
+    "build": "babel src --out-dir dist",
+    "start": "export NODE_ENV=production && yarn build && node ./dist/index.js",
     "dev": "nodemon --exec babel-node src/index.js",
+    "test": "export NODE_ENV=test && yarn db:setup && jest --forceExit && yarn db:drop",
     "db:setup": "sequelize db:create && sequelize db:migrate",
-    "db:seed": "&& sequelize db:seed:all",
-    "db:drop": "export NODE_ENV=test && sequelize db:drop",
-    "test": "export NODE_ENV=test && yarn db:setup && jest --forceExit && yarn db:drop"
+    "db:seed": "sequelize db:seed:all",
+    "db:drop": "sequelize db:drop"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
-    "@babel/node": "^7.5.5",
+    "@babel/node": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
     "@babel/runtime": "^7.5.5",
-    "dotenv": "^8.0.0",
     "graphql-tools": "^4.0.5",
     "jest": "^24.8.0",
     "jest-cli": "^24.8.0",
@@ -26,6 +24,9 @@
     "sequelize-cli": "^5.5.0"
   },
   "dependencies": {
+    "dotenv": "^8.0.0",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/cli": "^7.5.5",
     "apollo-server-express": "^2.7.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
