@@ -2,25 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import { Button } from "./ui";
 import { Delete } from "./icons";
-import { gql } from "apollo-boost";
 import { graphql } from "react-apollo";
-
-const COMMENTS_QUERY = gql`
-  {
-    comments {
-      id
-      body
-    }
-  }
-`;
-
-const DELETE_COMMENT = gql`
-  mutation DELETE_COMMENT($id: ID!) {
-    deleteComment(id: $id) {
-      id
-    }
-  }
-`;
+import { DELETE_COMMENT } from "../graphql/mutations";
+import { COMMENTS_QUERY } from "../graphql/queries";
 
 const Comment = styled.li`
   list-style: none;
@@ -65,6 +49,24 @@ const withComments = graphql(COMMENTS_QUERY);
 const withMutation = graphql(DELETE_COMMENT, {
   props: ({ mutate }) => ({
     deleteComment: variables => mutate({ variables })
+  }),
+  options: props => ({
+    update: (cache, { data: { deleteComment } }) => {
+      const { comments } = cache.readQuery({
+        query: COMMENTS_QUERY
+      });
+
+      const updateComments = comments.filter(
+        comment => comment.id !== deleteComment.id
+      );
+
+      cache.writeQuery({
+        query: COMMENTS_QUERY,
+        data: {
+          comments: updateComments
+        }
+      });
+    }
   })
 });
 

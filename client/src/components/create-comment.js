@@ -1,17 +1,9 @@
 import React from "react";
 import { Button, TextArea } from "./ui";
-import { gql } from "apollo-boost";
 import { graphql } from "react-apollo";
 import styled from "styled-components";
-
-const CREATE_COMMENT = gql`
-  mutation CREATE_COMMENT($body: String!) {
-    createComment(body: $body) {
-      id
-      body
-    }
-  }
-`;
+import { CREATE_COMMENT } from "../graphql/mutations";
+import { COMMENTS_QUERY } from "../graphql/queries";
 
 const WrapButton = styled.div`
   margin-top: 2em;
@@ -47,6 +39,20 @@ function CreateComment({ createComment }) {
 const withMutation = graphql(CREATE_COMMENT, {
   props: ({ mutate }) => ({
     createComment: variables => mutate({ variables })
+  }),
+  options: props => ({
+    update: (cache, { data: { createComment } }) => {
+      const { comments } = cache.readQuery({
+        query: COMMENTS_QUERY
+      });
+
+      cache.writeQuery({
+        query: COMMENTS_QUERY,
+        data: {
+          comments: [...comments, createComment]
+        }
+      });
+    }
   })
 });
 
