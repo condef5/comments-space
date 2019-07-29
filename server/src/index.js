@@ -14,5 +14,5 @@ const server = new ApolloServer({
 });
 
 server.listen({ port }, () => {
-  console.log("Server is running on localhost:4000");
+  console.log(`Server is running on localhost:${port}`);
 });

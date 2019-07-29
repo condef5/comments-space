@@ -4,6 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "build": "babel-node src --out-dir dist",
+    "start": "export NODE_ENV=production && yarn build && node ./build/index.js",
     "dev": "nodemon --exec babel-node src/index.js",
     "db:setup": "sequelize db:create && sequelize db:migrate && sequelize db:seed:all",
     "db:drop": "sequelize db:drop",
