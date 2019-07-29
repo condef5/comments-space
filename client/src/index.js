@@ -8,7 +8,7 @@ import App from "./components/App";
 import { register } from "./service-worker";
 
 const httpLink = createHttpLink({
-  uri: process.env.REACT_APP_API_URL || "http://localhost:4000"
+  uri: process.env.REACT_APP_API_URL || "http://localhost:4000/graphql"
 });
 
 const client = new ApolloClient({
