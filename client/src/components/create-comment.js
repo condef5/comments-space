@@ -10,6 +10,10 @@ const WrapButton = styled.div`
   text-align: right;
 `;
 
+const ButtonIcon = styled(Button)`
+  width: 150px;
+`;
+
 function CreateComment({ createComment }) {
   const [comment, setComment] = React.useState("");
 
@@ -19,7 +23,7 @@ function CreateComment({ createComment }) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(comment);
+    if (comment === "") return;
     createComment({ body: comment });
     setComment("");
   }
@@ -28,9 +32,9 @@ function CreateComment({ createComment }) {
     <form onSubmit={handleSubmit}>
       <TextArea rows="5" onChange={handleChange} value={comment} />
       <WrapButton>
-        <Button type="submit" style={{ width: "150px" }}>
+        <ButtonIcon type="submit" style={{}}>
           Send Comment
-        </Button>
+        </ButtonIcon>
       </WrapButton>
     </form>
   );

@@ -1,21 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { Button } from "./ui";
-import { Delete } from "./icons";
 import { graphql } from "react-apollo";
+import { AnimatePresence } from "framer-motion";
+import Comment from "./comment";
 import { PulseLoader } from "halogenium";
 import { DELETE_COMMENT } from "../graphql/mutations";
 import { COMMENTS_QUERY } from "../graphql/queries";
-
-const Comment = styled.li`
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 1em;
-  padding: 1em 0;
-`;
 
 const List = styled.ul`
   margin: 0;
@@ -32,18 +22,16 @@ function CommentList({ data: { loading, comments }, deleteComment }) {
       <h2>Comments</h2>
       <List>
         {loading && <Spinner size="14px" margin="4px" color="#000" />}
-        {!loading &&
-          comments.map(comment => (
-            <Comment key={comment.id}>
-              <div>{comment.body}</div>
-              <Button
-                style={{ width: "45px" }}
-                onClick={() => deleteComment({ id: comment.id })}
-              >
-                <Delete width="20px" />
-              </Button>
-            </Comment>
-          ))}
+        <AnimatePresence>
+          {!loading &&
+            comments.map(comment => (
+              <Comment
+                key={comment.id}
+                comment={comment}
+                deleteComment={deleteComment}
+              />
+            ))}
+        </AnimatePresence>
       </List>
     </>
   );
