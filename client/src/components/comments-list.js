@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Button } from "./ui";
 import { Delete } from "./icons";
 import { graphql } from "react-apollo";
+import { PulseLoader } from "halogenium";
 import { DELETE_COMMENT } from "../graphql/mutations";
 import { COMMENTS_QUERY } from "../graphql/queries";
 
@@ -21,24 +22,28 @@ const List = styled.ul`
   padding: 0;
 `;
 
-function CommentList({ data: { loading, comments }, deleteComment }) {
-  if (loading) return "loading...";
+const Spinner = styled(PulseLoader)`
+  text-align: center;
+`;
 
+function CommentList({ data: { loading, comments }, deleteComment }) {
   return (
     <>
       <h2>Comments</h2>
       <List>
-        {comments.map(comment => (
-          <Comment key={comment.id}>
-            <div>{comment.body}</div>
-            <Button
-              style={{ width: "45px" }}
-              onClick={() => deleteComment({ id: comment.id })}
-            >
-              <Delete width="20px" />
-            </Button>
-          </Comment>
-        ))}
+        {loading && <Spinner size="14px" margin="4px" color="#000" />}
+        {!loading &&
+          comments.map(comment => (
+            <Comment key={comment.id}>
+              <div>{comment.body}</div>
+              <Button
+                style={{ width: "45px" }}
+                onClick={() => deleteComment({ id: comment.id })}
+              >
+                <Delete width="20px" />
+              </Button>
+            </Comment>
+          ))}
       </List>
     </>
   );
