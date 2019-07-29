@@ -1,6 +1,6 @@
-const { gql } = require("apollo-server");
+import { gql } from "apollo-server-express";
 
-export default `
+export default gql`
   scalar Date
 
   type Query {
