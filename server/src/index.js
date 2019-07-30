@@ -19,5 +19,5 @@ app.use(cors());
 server.applyMiddleware({ app });
 
 app.listen({ port }, () => {
-  console.log(`Server is running on localhost:${port}`);
+  console.log(`Server is running on http://localhost:${port}/graphql ʕ￫ᴥ￩ʔ`);
 });
